@@ -83,6 +83,26 @@ func testdivide() {
     fmt.Printf("int_max/1: %d\n", divide(-2147483648, 1))
     fmt.Printf("int_max/1: %d\n", divide(-2147483648, -1))
 }
+    // for _, el := range perms_join {
+        // fmt.Println(el)
+    // }
+    // fmt.Printf("get indices of %s\n", substr)
+    // fmt.Println(indice_list)
+    // fmt.Println(left_win_displacement)
+    // get slice of indice_list[i] - (substr_len * word_count) - substr_len
+    // fmt.Println(right_win_displacement)
+    // don't need the iterator here
+    // fmt.Println(s)
+    // fmt.Println("-----------loop----------------")
+        // for each window, look for each permutation
+    // get slice of indice_list[i] - (substr_len * word_count) - substr_len
+        // fmt.Println("begin slide")
+            // fmt.Printf("iter n: %d\n", i)
+                // fmt.Println("skip left")
+                // fmt.Println("skip right")
+            // fmt.Printf("str in window: %s\n", str)
+                    // fmt.Printf("Found substr: %s at %d\n", perm, index)
+                    // slide forward
 
 func generatePermutations(words []string) [][]string {
     if (len(words) == 1) {
@@ -112,16 +132,12 @@ func findSubstring(s string, words []string) []int {
     for i, el := range perms_separate {
         perms_join[i] = strings.Join(el, "")
     }
-    for _, el := range perms_join {
-        fmt.Println(el)
-    }
     indice_list := make([]int, 0)
     start_index := 0
-    substr := words[1]
-    substr_len := len(words[1])
+    substr := words[0]
+    substr_len := len(words[0])
     n_of_words := len(words)
-
-    fmt.Printf("get indices of %s\n", substr)
+    s_len := len(s)
     
     for {
         index := strings.Index(s[start_index:], substr)
@@ -134,58 +150,68 @@ func findSubstring(s string, words []string) []int {
 
         start_index = index + substr_len
     }
-    fmt.Println(indice_list)
-
-    // get slice of indice_list[i] - (substr_len * word_count) - substr_len
-    // get slice of indice_list[i] - (substr_len * word_count) - substr_len
     left_win_displacement := (substr_len * n_of_words) - substr_len
     right_win_displacement := substr_len
-    fmt.Println(left_win_displacement)
-    fmt.Println(right_win_displacement)
-    // don't need the iterator here
     result := make([]int, 0)
-    fmt.Println(s)
+    var visited map[int]bool
+    visited = make(map[int]bool, s_len)
     for _, index := range indice_list {
-        // for each window, look for each permutation
         initial_left := index - left_win_displacement
         initial_right := index + right_win_displacement
-        fmt.Println("begin slide")
         for i := 0; i < (n_of_words); i++ {
             step := (substr_len * i)
+            n_step_l := initial_left + step
+            if visited[n_step_l] == true {
+                continue
+            }
+            n_step_r := initial_right + step
+            if n_step_l < 0 {
+                visited[n_step_l] = true
+                continue
+            }
+            if n_step_r > s_len {
+                continue
+            }
+            visited[n_step_l] = true
             str := s[initial_left + step:initial_right + step]
-            fmt.Printf("str in window: %s\n", str)
+            
             for _, perm := range perms_join {
                 if str == perm {
-                    fmt.Printf("Found substr: %s at %d\n", perm, index)
                     result = append(result, initial_left + step)
                     break
                 }
             }
         }
     }
-    fmt.Println(result)
-    return []int{0, 0}
+    return result
 }
 
 
 func main() {
-    s := "qweqweABCDqweqweCDABqweqweACDBgood"
+    s1 := "qweqweABCDqweqweCDABqweqweACDBgood"
     words1 := []string{"AB", "CD"}
-//    words2 := []string{"qwe", "hghg", "asd"}
-//    words3 := []string{"word","good","best","word"}
-    perms := generatePermutations(words1)
-    for _, p := range perms {
-        fmt.Println(p)
-    }
-//     perms = generatePermutations(words2)
-//     for _, p := range perms {
-//         fmt.Println(p)
-//     }
-//     perms = generatePermutations(words3)
-//     for _, p := range perms {
-//         fmt.Println(p)
-//     }
-    findSubstring(s, words1)
-//    findSubstring(s, words2)
-//    findSubstring(s, words3)
+    // perms := generatePermutations(words1)
+    // for _, p := range perms {
+    //     fmt.Println(p)
+    // }
+    fmt.Println(findSubstring(s1, words1))
+    s2:= "barfoothefoobarman"
+    words2 := []string{"foo","bar"}
+    fmt.Println(findSubstring(s2, words2))
+
+    s3 := "wordgoodgoodgoodbestword"
+    words3 := []string{"word","good","best","word"}
+    fmt.Println(findSubstring(s3, words3))
+
+    s4 := "barfoofoobarthefoobarman"
+    words4 := []string{"bar","foo","the"}
+    fmt.Println(findSubstring(s4, words4))
+
+    s5 := "wordgoodgoodgoodbestword"
+    words5 := []string{"word","good","best","good"}
+    fmt.Println(findSubstring(s5, words5))
+
+    s6 := "a"
+    words6 := []string{"a"}
+    fmt.Println(findSubstring(s6, words6))
 }
