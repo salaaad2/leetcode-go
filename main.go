@@ -158,7 +158,7 @@ func findSubstring(s string, words []string) []int {
                 if str == perm {
                     fmt.Printf("Found substr: %s at %d\n", perm, index)
                     result = append(result, initial_left + step)
-                    // slide forward
+                    break
                 }
             }
         }
