@@ -49,29 +49,39 @@ class Solution:
         return 0
         
 
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        charSet = set()
+        l = 0
+        res = 0
+
+        for i in range(len(s)):
+            while s[i] in charSet:
+                charSet.remove(s[l])
+                l += 1
+            charSet.add(s[i])
+            res = max(res, i - l + 1)
+        return res
+
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        freq_list = {}
+        l = 0
+
+        max_freq = 0
+        for r in range(len(s)):
+            freq_list[s[r]] = 1 + freq_list.get(s[r], 0)
+            max_freq = max(max_freq, freq_list[s[r]])
+            if (r - l + 1) > k:
+                print("not enough iterations to make list. increase left id")
+            r += 1
+
+        return res
 
 def main():
     solution = Solution()
 
-    # Test Case 1
-    numbers1 = [2, 7, 11, 15]
-    target1 = 9
-    print("Test Case 1:", solution.twoSum(numbers1, target1))  # Expected output: [0, 1]
-
-    # Test Case 2
-    numbers2 = [3, 2, 4]
-    target2 = 6
-    print("Test Case 2:", solution.twoSum(numbers2, target2))  # Expected output: [1, 2]
-
-    # Test Case 3
-    numbers3 = [3, 3]
-    target3 = 6
-    print("Test Case 3:", solution.twoSum(numbers3, target3))  # Expected output: [0, 1]
-
-    # Test Case 4
-    numbers4 = [-1, 0]
-    target4 = -1
-    print("Test Case 4:", solution.twoSum(numbers4, target4))  # Expected output: [0, 1]
+    print("test case 1:", solution.characterReplacement("ABAB", 2))
 
 if __name__ == "__main__":
     main()

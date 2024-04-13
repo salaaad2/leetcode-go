@@ -84,6 +84,40 @@ int majorityElement(int* nums, int numsSize) {
     }
     return 0;
 }
+int characterReplacement(std::string s, int k) {
+    int n = s.length();
+    int left = 0, right = 0;
+    
+    std::vector<int> freq(26, 0);  // stores char frequency
+    int maxFreq = 0;
+    int maxLen = 0;
+
+    while(right < n) {
+        freq[s[right]]++;  // increment frequency
+        maxFreq = std::max(maxFreq, freq[s[right]]);  // update maxFreq
+        
+        // when changes required is > k
+        if(( (right-left+1) - maxFreq ) > k)
+        {
+            freq[s[left]]--;
+            maxFreq = 0;
+            for(int i=0; i<26; i++)
+            {
+                maxFreq = std::max(maxFreq, freq[i]);
+            }
+            left++;
+        }
+
+        if( (right-left+1) - maxFreq  <=  k)
+        {
+            maxLen = std::max(maxLen, right-left+1);
+        }
+
+        right++;
+    }
+
+    return maxLen;
+}
 
 int main(void)
 {
