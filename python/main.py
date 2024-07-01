@@ -72,16 +72,18 @@ class Solution:
         for r in range(len(s)):
             freq_list[s[r]] = 1 + freq_list.get(s[r], 0)
             max_freq = max(max_freq, freq_list[s[r]])
+            print(f"r: {r}, l: {l}")
             if (r - l + 1) > k:
                 print("not enough iterations to make list. increase left id")
-            r += 1
-
-        return res
+                freq_list[s[l]] = freq_list.get(s[l], 0) - 1
+                l += 1
+        return r - l
 
 def main():
     solution = Solution()
 
     print("test case 1:", solution.characterReplacement("ABAB", 2))
+    print("test case 2:", solution.characterReplacement("AABABBA", 1))
 
 if __name__ == "__main__":
     main()
