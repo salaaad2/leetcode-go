@@ -82,6 +82,23 @@ impl Solution
         }
         true
     }
+
+    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut num_indices: HashMap<i32, i32> = HashMap::new();
+        let mut complement: i32;
+
+        for (i, val) in nums.iter().enumerate()
+        {
+            complement = target - val;
+            if num_indices.contains_key(&complement)
+            {
+                return Vec::<i32>::from([num_indices[&complement], i as i32])
+            }
+            *num_indices.entry(*val).or_insert(0) = i as i32;
+        }
+
+        Vec::from([1,2])
+    }
 }
 
 
@@ -96,10 +113,10 @@ fn main()
     // println!("{}", Solution::contains_duplicate_hashmap(&&nums2));
     // println!("{}", Solution::contains_duplicate_hashmap(&&nums3));
     // println!("{}", Solution::contains_duplicate_hashmap(&&nums4));
-    let input1: String = String::from("anagram");
-    let input2: String = String::from("nagaram");
-    println!("{}", Solution::is_anagram(input1, input2));
-    let input3: String = String::from("rat");
-    let input4: String = String::from("car");
-    println!("{}", Solution::is_anagram(input3, input4));
+    // let input1: String = String::from("anagram");
+    // let input2: String = String::from("nagaram");
+    // println!("{}", Solution::is_anagram(input1, input2));
+    // let input3: String = String::from("rat");
+    // let input4: String = String::from("car");
+    // println!("{}", Solution::is_anagram(input3, input4));
 }
