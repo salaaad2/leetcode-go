@@ -55,6 +55,7 @@ impl Solution
         false
     }
 
+#[allow(unused)]
     pub fn is_anagram(s: String, t: String) -> bool
     {
         if s.len() != t.len()
@@ -97,7 +98,7 @@ impl Solution
             *num_indices.entry(*val).or_insert(0) = i as i32;
         }
 
-        Vec::from([1,2])
+        Vec::from([])
     }
 }
 
@@ -119,4 +120,11 @@ fn main()
     // let input3: String = String::from("rat");
     // let input4: String = String::from("car");
     // println!("{}", Solution::is_anagram(input3, input4));
+    let input5: Vec::<i32> = Vec::from([2,7,11,15]);
+    let input6: Vec::<i32> = Vec::from([3,2,4]);
+    let input7: Vec::<i32> = Vec::from([3,3]);
+
+    println!("{:?}", Solution::two_sum(input5, 9));
+    println!("{:?}", Solution::two_sum(input6, 6));
+    println!("{:?}", Solution::two_sum(input7, 6));
 }
