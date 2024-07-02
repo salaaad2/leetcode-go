@@ -126,6 +126,55 @@ impl Solution
         }
         output
     }
+
+    pub fn group_anagrams_hashmap_self(strs: Vec<String>) -> Vec<Vec<String>> {
+        let mut output: Vec<Vec<String>> = Vec::new();
+        let mut mut_str = strs.clone();
+
+        for i in 0..mut_str.len() 
+        {
+            for j in 0..mut_str.len()
+            {
+                if j != i && Solution::is_anagram(mut_str[i].to_string(), mut_str[j].to_string())
+                {
+                    if let Some(inner) = output.get_mut(i)
+                    {
+                        inner.push(mut_str[j].to_string());
+                    }
+                    else 
+                    {
+                        let mut inner = Vec::new();
+                        inner.push(mut_str[i].to_string());
+                        inner.push(mut_str[j].to_string());
+                        output.insert(i, inner);
+                        mut_str.remove(i);
+                    }
+                    mut_str.remove(j);
+                    println!("{:?}", mut_str);
+                    println!("{:?}", output);
+                    continue;
+                }
+            }
+        }
+        output
+    }
+
+    pub fn group_anagrams_hashmap(strs: Vec<String>) -> Vec<Vec<String>>
+    {
+        let mut anagrams_map: HashMap<String, Vec<String>> = HashMap::new();
+
+        for s in strs {
+            let mut chars: Vec<char> = s.chars().collect();
+            chars.sort_unstable();
+            let sorted_s: String = chars.into_iter().collect();
+
+            anagrams_map.entry(sorted_s)
+                .and_modify(|v| v.push(s.clone()))
+                .or_insert_with(|| vec![s.clone()]);
+        }
+
+        anagrams_map.into_values().collect()
+    }
 }
 
 
@@ -156,7 +205,7 @@ fn main()
     let input1: Vec::<String> = vec!["eat".to_string(), "tea".to_string(), "tan".to_string(), "ate".to_string(), "nat".to_string(), "bat".to_string()];
     let input2: Vec::<String> = vec!["".to_string()];
     let input3: Vec::<String> = vec!["a".to_string()];
-    println!("{:?}", Solution::group_anagrams(input1));
-    println!("{:?}", Solution::group_anagrams(input2));
-    println!("{:?}", Solution::group_anagrams(input3));
+    println!("{:?}", Solution::group_anagrams_hashmap(input1));
+    println!("{:?}", Solution::group_anagrams_hashmap(input2));
+    println!("{:?}", Solution::group_anagrams_hashmap(input3));
 }
