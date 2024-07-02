@@ -56,6 +56,23 @@ impl Solution
     }
 
 #[allow(unused)]
+    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut num_indices: HashMap<i32, i32> = HashMap::new();
+        let mut complement: i32;
+
+        for (i, val) in nums.iter().enumerate()
+        {
+            complement = target - val;
+            if num_indices.contains_key(&complement)
+            {
+                return Vec::<i32>::from([num_indices[&complement], i as i32])
+            }
+            *num_indices.entry(*val).or_insert(0) = i as i32;
+        }
+
+        Vec::from([])
+    }
+
     pub fn is_anagram(s: String, t: String) -> bool
     {
         if s.len() != t.len()
@@ -84,21 +101,30 @@ impl Solution
         true
     }
 
-    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-        let mut num_indices: HashMap<i32, i32> = HashMap::new();
-        let mut complement: i32;
+    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
+        let mut output: Vec<Vec<String>> = Vec::new();
 
-        for (i, val) in nums.iter().enumerate()
+        for (i, value) in strs.iter().enumerate() 
         {
-            complement = target - val;
-            if num_indices.contains_key(&complement)
+            for (j, v) in strs.iter().enumerate()
             {
-                return Vec::<i32>::from([num_indices[&complement], i as i32])
+                if j != i && Solution::is_anagram(v.to_string(), value.to_string())
+                {
+                    if let Some(inner) = output.get_mut(i)
+                    {
+                        inner.push(value.to_string());
+                    }
+                    else 
+                    {
+                        let mut inner = Vec::new();
+                        inner.push(v.to_string());
+                        inner.push(value.to_string());
+                        output.insert(i, inner);
+                    }
+                }
             }
-            *num_indices.entry(*val).or_insert(0) = i as i32;
         }
-
-        Vec::from([])
+        output
     }
 }
 
@@ -120,11 +146,17 @@ fn main()
     // let input3: String = String::from("rat");
     // let input4: String = String::from("car");
     // println!("{}", Solution::is_anagram(input3, input4));
-    let input5: Vec::<i32> = Vec::from([2,7,11,15]);
-    let input6: Vec::<i32> = Vec::from([3,2,4]);
-    let input7: Vec::<i32> = Vec::from([3,3]);
+    // let input5: Vec::<i32> = Vec::from([2,7,11,15]);
+    // let input6: Vec::<i32> = Vec::from([3,2,4]);
+    // let input7: Vec::<i32> = Vec::from([3,3]);
 
-    println!("{:?}", Solution::two_sum(input5, 9));
-    println!("{:?}", Solution::two_sum(input6, 6));
-    println!("{:?}", Solution::two_sum(input7, 6));
+    // println!("{:?}", Solution::two_sum(input5, 9));
+    // println!("{:?}", Solution::two_sum(input6, 6));
+    // println!("{:?}", Solution::two_sum(input7, 6));
+    let input1: Vec::<String> = vec!["eat".to_string(), "tea".to_string(), "tan".to_string(), "ate".to_string(), "nat".to_string(), "bat".to_string()];
+    let input2: Vec::<String> = vec!["".to_string()];
+    let input3: Vec::<String> = vec!["a".to_string()];
+    println!("{:?}", Solution::group_anagrams(input1));
+    println!("{:?}", Solution::group_anagrams(input2));
+    println!("{:?}", Solution::group_anagrams(input3));
 }
