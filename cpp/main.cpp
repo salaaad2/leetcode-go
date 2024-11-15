@@ -5,6 +5,13 @@
 #include <stdbool.h>
 #include <iostream>
 #include <vector>
+#include <map>
+
+using std::vector;
+using std::map;
+using std::multimap;
+using std::cout;
+using std::endl;
 
 bool exists(int ints[], int count, int k)
 {
@@ -119,31 +126,73 @@ int characterReplacement(std::string s, int k) {
     return maxLen;
 }
 
+vector<int> topKFrequent(vector<int>& nums, int k)
+{
+    map<int, int> frequencies;
+    multimap<int, int> ordered;
+    vector<int> out;
+    for (const auto & v:nums)
+    {
+        frequencies[v] += 1;
+    }
+    for (const auto &[key,v] : frequencies)
+    {
+        ordered.insert({v, key});
+    }
+    int i = 1;
+    for (auto it = ordered.rbegin(); it != ordered.rend() ; ++it)
+    {
+        out.push_back((*it).second);
+        if (i == k)
+        {
+            break;
+        }
+        i++;
+    }
+    return out;
+}
+
+        //cout << "key: " << (*it).first << " value: " << (*it).second << " i: " << i << endl;
 int main(void)
 {
-    int arr1[1] = {-273};
-    int arr2[6] = {-15, -7, -9, -14, -12, -273};
-    int arr3[2] = {-10, -10};
-    int arr4[6] = {15,-7,9,14,7,12 };
-    std::cout << compute_closest_to_zero(1, arr1) << std::endl;
-    std::cout << compute_closest_to_zero(6, arr2) << std::endl;
-    std::cout << compute_closest_to_zero(2, arr3) << std::endl;
-    std::cout << compute_closest_to_zero(6, arr4) << std::endl;
+    // int arr1[1] = {-273};
+    // int arr2[6] = {-15, -7, -9, -14, -12, -273};
+    // int arr3[2] = {-10, -10};
+    // int arr4[6] = {15,-7,9,14,7,12 };
+    // std::cout << compute_closest_to_zero(1, arr1) << std::endl;
+    // std::cout << compute_closest_to_zero(6, arr2) << std::endl;
+    // std::cout << compute_closest_to_zero(2, arr3) << std::endl;
+    // std::cout << compute_closest_to_zero(6, arr4) << std::endl;
 
     //std::cout << exists(arr4, 6, -7) << std::endl;
     //std::cout << exists(arr4, 6, 273) << std::endl;
     //std::cout << exists(arr4, 6, -7) << std::endl;
-    std::cout << exists(arr3, 2, -10) << std::endl;
+    //std::cout << exists(arr3, 2, -10) << std::endl;
     //std::cout << exists(arr4, 6, 10) << std::endl;
     //std::cout << exists(arr4, 6, 15) << std::endl;
     //
-    int arr5[3] = {3, 2, 3};
-    std::cout << majorityElement(arr5, 3);
-    int arr6[7] = {2,2,1,1,1,2,2};
-    std::cout << majorityElement(arr6, 7);
-    std::vector<int> vec(2);
-    vec.push_back(1);
-    vec.push_back(1);
-    vec.push_back(1);
-    std::cout <<"\n" << vec.size() << std::endl;
+    //int arr5[3] = {3, 2, 3};
+    //std::cout << majorityElement(arr5, 3);
+    //int arr6[7] = {2,2,1,1,1,2,2};
+    //std::cout << majorityElement(arr6, 7);
+    //std::vector<int> vec(2);
+    //vec.push_back(1);
+    //vec.push_back(1);
+    //vec.push_back(1);
+    //std::cout <<"\n" << vec.size() << std::endl;
+
+    vector<int> nums = {1,1,1,2,2,3};
+    auto res = topKFrequent(nums, 2);
+    for (const auto & v: res)
+    {
+        std::cout << v << "\n";
+    }
+    std::cout << "NEXT\n";
+
+    vector<int> nums1 = {-1, -1};
+    res = topKFrequent(nums1, 1);
+    for (const auto & v: res)
+    {
+        std::cout << v << "\n";
+    }
 }
